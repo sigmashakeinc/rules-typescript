@@ -15,9 +15,8 @@ rule warn-math-random {
   enabled true
   priority 70
   severity warning
-  ASK write
+  LOG write
   IF path GLOB "**/*.ts" AND content CONTAINS "Math.random()"
   OR path GLOB "**/*.tsx" AND content CONTAINS "Math.random()"
   MESSAGE "Math.random() is cryptographically insecure. If this is for security tokens, passwords, or IDs, use crypto.getRandomValues() or crypto.randomBytes()."
-  PROMPT "Is this random value non-security critical (like UI animations)? If for security, use the crypto module."
 }

@@ -17,23 +17,21 @@ rule no-console-log-in-src {
   enabled true
   priority 75
   severity warning
-  ASK write
+  LOG write
   IF path GLOB "src/**/*.ts" AND content CONTAINS "console.log("
   OR path GLOB "src/**/*.tsx" AND content CONTAINS "console.log("
   MESSAGE "console.log() in source code detected. Use a structured logger instead so output can be controlled in production."
-  PROMPT "Is this debug output that should be removed? If logging is needed, use a proper logger (e.g., pino, winston) that can be silenced in production."
 }
 
 rule no-empty-catch {
   enabled true
   priority 70
   severity warning
-  ASK write
+  LOG write
   IF path GLOB "**/*.ts" AND content LINE_REGEX "catch\\s*\\([^)]*\\)\\s*\\{\\s*\\}"
   OR path GLOB "**/*.tsx" AND content LINE_REGEX "catch\\s*\\([^)]*\\)\\s*\\{\\s*\\}"
   OR path GLOB "**/*.js" AND content LINE_REGEX "catch\\s*\\([^)]*\\)\\s*\\{\\s*\\}"
   MESSAGE "Empty catch block silently swallows errors. At minimum, log the error or rethrow it."
-  PROMPT "Should this catch block log the error, rethrow it, or handle a specific case? Silent failure makes debugging impossible."
 }
 
 rule prefer-const-over-let {

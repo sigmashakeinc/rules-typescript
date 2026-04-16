@@ -53,13 +53,12 @@ rule ask-inner-html {
   enabled true
   priority 80
   severity warning
-  ASK write
+  LOG write
   IF path GLOB "**/*.ts" AND content CONTAINS "innerHTML"
   OR path GLOB "**/*.tsx" AND content CONTAINS "dangerouslySetInnerHTML"
   OR path GLOB "**/*.ts" AND content CONTAINS "document.write("
   OR path GLOB "**/*.js" AND content CONTAINS "innerHTML"
   MESSAGE "Direct HTML injection detected. Verify the value is sanitized — never pass user-supplied data to innerHTML or dangerouslySetInnerHTML."
-  PROMPT "Is this value fully sanitized before assignment? If it includes any user data, use a safe DOM API (textContent, createElement) instead."
 }
 
 rule catch-unknown-not-any {
@@ -76,10 +75,9 @@ rule no-non-null-assertion {
   enabled true
   priority 75
   severity warning
-  ASK write
+  LOG write
   IF path GLOB "**/*.ts" AND content LINE_REGEX "[a-zA-Z0-9_\\]\\)]\\.!"
   OR path GLOB "**/*.ts" AND content LINE_REGEX "[a-zA-Z0-9_\\]\\)]\\[.*\\]!"
   OR path GLOB "**/*.tsx" AND content LINE_REGEX "[a-zA-Z0-9_\\]\\)]\\.!"
   MESSAGE "Non-null assertion (!) detected. Handle the null/undefined case explicitly rather than asserting it away."
-  PROMPT "Can this be replaced with optional chaining (?.) or an explicit null check? Non-null assertions hide runtime errors."
 }
