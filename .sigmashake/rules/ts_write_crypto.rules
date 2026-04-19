@@ -11,6 +11,17 @@ rule no-insecure-crypto-md5 {
   MESSAGE "MD5 and SHA1 are cryptographically broken. Use SHA-256 or better (e.g., SHA-3)."
 }
 
+rule no-jwt-none-algorithm {
+  enabled true
+  priority 100
+  severity error
+  DENY write
+  IF path GLOB "**/*.ts" AND content LINE_REGEX "algorithms?\\s*:\\s*\\[?\\s*['\"]none['\"]"
+  OR path GLOB "**/*.tsx" AND content LINE_REGEX "algorithms?\\s*:\\s*\\[?\\s*['\"]none['\"]"
+  OR path GLOB "**/*.js" AND content LINE_REGEX "algorithms?\\s*:\\s*\\[?\\s*['\"]none['\"]"
+  MESSAGE "Accepting the JWT 'none' algorithm lets any attacker forge tokens by stripping the signature (CVE-2015-9235 class; still reappears in wrappers). Pin algorithms to a concrete list like ['RS256'] or ['HS256'] when calling jsonwebtoken.verify / jose.jwtVerify."
+}
+
 rule warn-math-random {
   enabled true
   priority 70

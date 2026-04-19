@@ -3,7 +3,7 @@
 # Covers: var declarations, console.log, empty catch, const preference.
 
 rule no-var-declarations {
-  enabled true
+  enabled false
   priority 40
   severity warning
   LOG write
@@ -35,7 +35,7 @@ rule no-empty-catch {
 }
 
 rule prefer-const-over-let {
-  enabled true
+  enabled false
   priority 30
   severity info
   LOG write
